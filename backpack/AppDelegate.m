@@ -7,15 +7,26 @@
 //
 
 #import "AppDelegate.h"
+#import <LayerKit/LayerKit.h>
 
 @interface AppDelegate ()
-
+@property (strong, nonnull) LYRClient *layerClient; 
 @end
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Initializes a LYRClient object
+    NSURL *appID = [NSURL URLWithString:@"layer:///apps/staging/c7d72dac-bfa3-11e5-bcc0-2b32000000b0"];
+    self.layerClient = [LYRClient clientWithAppID:appID delegate:self options:nil];
+    
+    // Tells LYRClient to establish a connection with the Layer service
+    [self.layerClient connectWithCompletion:^(BOOL success, NSError *error) {
+        if (success) {
+            NSLog(@"Client is Connected!");
+        }
+    }];
     // Override point for customization after application launch.
     return YES;
 }
